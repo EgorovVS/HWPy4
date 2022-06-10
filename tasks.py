@@ -65,3 +65,122 @@ bonus = 1500
 beer_price = 2
 result = beeramid(bonus,beer_price)
 print(result)
+
+# Конфетки
+
+import random
+from random import randint
+import time
+
+def pause():
+    time.sleep(1)
+    print()
+
+def candy_remains(candy_count, player_move =0, candy = ' >0< '):
+    candy_count-=player_move
+    return candy_count
+
+def picture(count, candy = ' >0< '):
+    return (candy*count)
+
+def player_change(player):
+    if player == 'Игрока ->':
+       player = 'Компьютера -> '
+       print()
+       print(f'Ход {player }')
+    else:
+        print()
+        player = 'Игрока ->'
+        print(f'Ход {player }')
+    return player
+    
+def move(player_move):
+    while True:
+        player_move = input('Возьмите от 1 до 3 конфет ')
+        if not player_move.isdigit() or int(player_move) == 0:
+            print()
+            print('Вы ввели недопустимое значение ')
+        elif(int(player_move) > 3 or int(player_move) < 1):
+            print()
+            print('Вы взяли недопустимое количество, попробуйте снова ')
+        else:
+            return int(player_move)
+
+def comp_move():
+    move = randint(1,3)
+    return move
+
+def game_start():
+    while True:
+        candy_count = input("Введите количество конфет ")
+        if not candy_count.isdigit() or int(candy_count) <= 0:
+            print()
+            print('Вы ввели некорректное значение, попробуйте снова ')
+            print()
+        return int(candy_count)
+
+def rock_paper_scissors():
+    value = randint(1,2)
+    if value == 1:
+        player = 'Игрока ->'
+        print()
+        print('Вы ходите первым ')
+    else:
+        player = 'Компьютера -> '
+        print()
+        print('Компьютер ходит первым ')
+        
+        return player
+
+print()
+print("Вас приветствует игра 'Конфетки'. Игроки по очереди берут от 1 до 3 конфет. Игрок, взявший последнюю конфету - проигрывает")
+pause()
+candy_count = game_start()
+pause()
+candy = ' >0< '
+player = rock_paper_scissors()
+player_move = 0
+computer_move = 0
+
+print(picture(candy_count))
+print()
+while candy_count>0:
+    print()
+    if player == 'Игрока ->':
+        player_move = move(player_move)
+        candy_count = candy_remains(candy_count, player_move)
+        pause()
+        print(picture(candy_count))
+        if candy_count == 1:
+            player = player_change(player).replace('а','')
+            print()
+            print(f'{player} Компьютер взял последнюю конфету и проиграл')
+            print()
+            break
+        elif candy_count == 0:
+            player = player_change(player).replace('а','')
+            print()
+            print(f'{player} Вы взяли последнюю конфету и проиграли')
+            print()
+            break
+        player = player_change(player)
+    else:
+        computer_move = comp_move()
+        candy_count = candy_remains(candy_count, computer_move)
+        pause()
+        print(f'Компьютер берет {computer_move}')
+        pause()
+        print(picture(candy_count))
+        if candy_count == 1:
+            player = player_change(player).replace('а','')
+            print()
+            print(f'{player} Вам досталась последняя конфета, Вы проиграли')
+            print()
+            break
+        elif candy_count == 0:
+            player = player.replace('а','')
+            print()
+            print(f'{player} взял последнюю конфету и проиграл')
+            print()
+            break
+        player = player_change(player)
